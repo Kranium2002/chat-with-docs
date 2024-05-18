@@ -35,7 +35,7 @@ if st.button("Process Documents"):
 
     # Make a request to FastAPI route /getText with the specified file path
     response_text = requests.get(
-        "http://localhost:8000/getText", params={"path": "files/output_links.json"}
+        "http://localhost:8000/getText", params={"path": "data/output_links.json"}
     ).json()
     st.text(response_text["status"])
 
