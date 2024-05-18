@@ -1,0 +1,1 @@
+from docCrawler.spiders.spider import * # noqa
