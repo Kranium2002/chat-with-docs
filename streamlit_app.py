@@ -24,7 +24,7 @@ if st.button("Search"):
 if st.sidebar.button("Start Crawling"):
     st.sidebar.text("Crawling in progress...")
 
-    api_url = "http://localhost:8000/getLinks"
+    api_url = "http://127.0.0.1:8000/getLinks"
     params = {"start_url": start_url, "max_depth": max_depth}
     response = requests.get(api_url, params=params)
 
@@ -35,14 +35,14 @@ if st.button("Process Documents"):
 
     # Make a request to FastAPI route /getText with the specified file path
     response_text = requests.get(
-        "http://localhost:8000/getText", params={"path": "data/output_links.json"}
+        "http://127.0.0.1:8000/getText", params={"path": "data/output_links.json"}
     ).json()
     st.text(response_text["status"])
 
     st.sidebar.text("Splitting documents...")
 
     # Make a request to FastAPI route /initializeDB
-    response_init_db = requests.get("http://localhost:8000/initializeDB").json()
+    response_init_db = requests.get("http://127.0.0.1:8000/initializeDB").json()
     st.sidebar.text(response_init_db["status"])
 
     st.text("Documents processed successfully!")
