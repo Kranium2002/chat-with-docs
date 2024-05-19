@@ -8,7 +8,6 @@ ARG PYTHON_VERSION=3.10.12
 FROM python:${PYTHON_VERSION}-buster as base
 
 
-
 # Prevents Python from writing pyc files.
 ENV PYTHONDONTWRITEBYTECODE=1
 
@@ -28,8 +27,8 @@ SHELL ["/bin/bash", "-c"]
 # Copy the source code into the container.
 COPY . .
 
-RUN apt install sqlite3
-RUN pip install -r requirements.txt
+RUN apt install sqlite3 poetry
+RUN poetry install
 
 # Expose the port that the application listens on.
 EXPOSE 8000

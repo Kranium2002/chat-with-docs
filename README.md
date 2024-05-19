@@ -14,7 +14,7 @@ To use Chat with Your Docs, follow these simple steps:
    uvicorn server:app --host 0.0.0.0 --port 8000 --workers 1
    ```
 
-   This will start the FastAPI server, which will be accessible on `http://localhost:8000` or `http://your-server-ip:8000` depending on your configuration.
+   This will start the FastAPI server, which will be accessible on `http://127.0.0.1:8000` or `http://your-server-ip:8000` depending on your configuration.
 
    <br>
 

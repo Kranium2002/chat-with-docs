@@ -1,0 +1,1 @@
+from docCrawler.middleware.middlewares import *  # noqa
