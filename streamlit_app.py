@@ -1,6 +1,6 @@
 import requests
 import streamlit as st
-from scripts.helpers import search_similarity
+from docCrawler.utils.helpers import SimilaritySearch
 
 st.title("Chat-with-your-docs")
 
@@ -16,7 +16,7 @@ query = st.text_input("Enter your query")
 openai_api_key = st.text_input("OpenAI API Key")
 
 if st.button("Search"):
-    answer = search_similarity(query, openai_api_key)
+    answer = SimilaritySearch.search_similarity(query, openai_api_key)
     st.text("Answer:")
     st.write(answer)
 
@@ -35,7 +35,7 @@ if st.button("Process Documents"):
 
     # Make a request to FastAPI route /getText with the specified file path
     response_text = requests.get(
-        "http://127.0.0.1:8000/getText", params={"path": "data/output_links.json"}
+        "http://127.0.0.1:8000/getText", params={"path": "data/"}
     ).json()
     st.text(response_text["status"])
 

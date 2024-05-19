@@ -1,13 +1,13 @@
 from fastapi import FastAPI
 from typing import Optional
 from twisted.internet import reactor
-from scripts.helpers import (
-    data_loader,
-    start_crawler,
-    split_docs,
-    init_database,
-    get_full_text,
-    search_similarity,
+from docCrawler.utils.helpers import (
+    Crawler,
+    ArticleFetcher,
+    DataLoader,
+    TextSplitter,
+    DatabaseInitializer,
+    SimilaritySearch,
 )
 import uvicorn
 
@@ -25,7 +25,7 @@ def read_root():
 @app.get("/getLinks")
 def get_links(start_url: str, max_depth: Optional[int] = 5):
     # Start the crawler with the given parameters
-    deferred = start_crawler(start_url, max_depth=max_depth)
+    _ = Crawler.start(start_url, max_depth=max_depth)
     # Run the Twisted reactor (start the crawling process)
     reactor.run()
     # Return any necessary response
@@ -34,17 +34,18 @@ def get_links(start_url: str, max_depth: Optional[int] = 5):
 
 # Route for running function get_full_text
 @app.get("/getText")
-def get_text(path: Optional[str] = "output_links.json"):
-    full_text = get_full_text(path)
+def get_text(path: Optional[str]=None):
+    fetcher = ArticleFetcher()
+    fetcher.get_full_text(path)
     return {"status": "Full text generated successfully!"}
 
 
 # Route for initializing the database
 @app.get("/initializeDB")
 def initialize_db():
-    data = data_loader()
-    docs = split_docs(data)
-    database = init_database(docs)
+    data = DataLoader.load_data()
+    docs = TextSplitter.split_docs(data)
+    database = DatabaseInitializer.init_database(docs)
     return {"status": "Database initialized successfully!", "database": database}
 
 
@@ -52,7 +53,7 @@ def initialize_db():
 def query(
     query: str, openai_api_key: str, model_name: Optional[str] = "all-MiniLM-L6-v2"
 ):
-    answer = search_similarity(query, openai_api_key)
+    answer = SimilaritySearch.search_similarity(query, openai_api_key)
     return {"status": "Search completed successfully!", "answer": answer}
 
 
